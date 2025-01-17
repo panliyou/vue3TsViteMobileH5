@@ -10,7 +10,7 @@ service.interceptors.request.use(
   (config: any) => {
     config.headers.sog
     if (!config.headers) {
-      throw new Error(`好像没有请求头哦`)
+      throw new Error(`缺少请求头!`)
     }
     //   if (token) {
     // 	config.headers.Authorization = ``;
@@ -31,7 +31,7 @@ service.interceptors.response.use(
       if (response.data instanceof ArrayBuffer) {
         return response
       }
-      showToast(msg || '系统出错')
+    //   showToast(msg || '系统出错')
       return Promise.reject(new Error(msg || 'Error'))
     }
   },

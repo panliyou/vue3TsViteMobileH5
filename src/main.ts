@@ -14,7 +14,8 @@ import {
   Picker,
   RadioGroup,
   Radio,
-  Toast 
+  Toast,
+  NavBar
 } from 'vant'
 
 function start() {
@@ -29,6 +30,7 @@ function start() {
   app.use(RadioGroup)
   app.use(Radio)
   app.use(Toast)
+  app.use(NavBar)
   app.use(router)
   app.mount('#app')
 }
