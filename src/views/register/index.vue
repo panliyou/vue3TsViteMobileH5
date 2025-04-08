@@ -42,13 +42,6 @@
       </van-form>
     </div>
 
-    <!-- <van-popup v-model:show="showPicker" destroy-on-close position="bottom">
-      <van-date-picker
-        :model-value="pickerValue"
-        @confirm="onConfirm"
-        @cancel="showPicker = false"
-      />
-    </van-popup> -->
   </div>
 </template>
 
@@ -57,13 +50,63 @@ import { ref, onMounted } from "vue";
 import { showToast } from "vant";
 import { showLoadingToast } from "vant";
 import { memberRegisterApi } from "@/api/home";
-import router from "@/router/index";
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+
+const router = useRouter();
 
 const authBtnShow = <boolean>true;
 
-// const appId = ref<String>("wx727345ffe052691e");
-// const appId = ref<String>("wx22ad20bea9ccbbeb");
-const appId = ref<String>("wxe520244476e4bdfb");
+const count = ref(0);
+const checked = ref("1");
+const showPicker = ref<Boolean>(false);
+const pickerValue = ref([]);
+const registerForm = ref({
+  //   name: "",
+  phone: "",
+  code: "",
+  //   sex: 1,
+  //   birth: "",
+});
+
+const registerFormRef = ref(null);
+
+onMounted(() => {
+  registerForm.value.code = getUrlName("code");
+  if(!!route.query.code){
+    registerForm.value.code = String(route.query.code)  
+  }
+
+  console.log('register授权链接上携带的code的值=>' + registerForm.value.code);
+
+  if (!registerForm.value.code) {
+    router.push({ path: "/" });
+  }
+});
+
+const onSubmit = () => {
+  if (!registerForm.value.phone) return showToast("请填写手机号!");
+  let params = registerForm.value;
+
+  const toast = showLoadingToast({
+    message: "加载中...",
+    forbidClick: true,
+    loadingType: "spinner",
+    duration: 30000,
+  });
+
+  memberRegisterApi(params)
+    .then((res) => {
+      toast.close();
+    })
+    .catch((err) => {
+      setTimeout(() => {
+        toast.close();
+        showToast(err.Error || "系统错误!");
+      }, 1000);
+    });
+};
 
 const getUrlName = (paramName: any) => {
   const url = window.location.href;
@@ -116,58 +159,6 @@ const deUrlParam = (url: any, params: any) => {
   }
   return url;
 };
-
-const count = ref(0);
-const checked = ref("1");
-const showPicker = ref<Boolean>(false);
-const pickerValue = ref([]);
-const registerForm = ref({
-  //   name: "",
-  phone: "",
-  code: "",
-  //   sex: 1,
-  //   birth: "",
-});
-
-const registerFormRef = ref(null);
-
-onMounted(() => {
-  registerForm.value.code = getUrlName("code");
-  if (registerForm.value.code) {
-    router.push({ path: "/" });
-  }
-});
-
-const onSubmit = () => {
-  //   if (!registerForm.value.name) return showToast("请填写名字!");
-  if (!registerForm.value.phone) return showToast("请填写手机号!");
-  // let params = registerForm.value
-  let params = registerForm.value;
-
-  const toast = showLoadingToast({
-    message: "加载中...",
-    forbidClick: true,
-    loadingType: "spinner",
-    duration: 30000,
-  });
-
-  memberRegisterApi(params)
-    .then((res) => {
-      toast.close();
-    })
-    .catch((err) => {
-      setTimeout(() => {
-        toast.close();
-        showToast(err.Error || "系统错误!");
-      }, 1000);
-    });
-};
-
-// const onConfirm = ({ selectedValues }: any) => {
-//   pickerValue.value = selectedValues;
-//   registerForm.value.birth = selectedValues.join("/");
-//   showPicker.value = false;
-// };
 </script>
 
 <style scoped lang="scss">

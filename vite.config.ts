@@ -59,7 +59,7 @@ const viteConfig = ({ mode }: ConfigEnv): UserConfig => {
                 output: {
                     manualChunks: {
                         vue: ['vue', 'vue-router'],
-                        echarts: ['echarts'],
+                        // echarts: ['echarts'],
                     },
                     entryFileNames: `assets/[name].[hash]${new Date().getTime()}.js`,
                     chunkFileNames: `assets/[name].[hash]${new Date().getTime()}.js`,

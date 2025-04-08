@@ -4,8 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
+    "serve:dev": "vite --mode development --force",
+    "serve:prod": "vite --mode production --force",
+    "build:dev": "vite build --mode development && esno ./src/utils/build.ts",
+    "build:prod": "vite build --mode production && esno ./src/utils/build.ts",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -12,9 +12,11 @@ service.interceptors.request.use(
     if (!config.headers) {
       throw new Error(`缺少请求头!`)
     }
+    
     //   if (token) {
     // 	config.headers.Authorization = ``;
     //   }
+
     return config
   },
   (error: any) => {
